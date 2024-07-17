@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Send_Order</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Send Order</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>{!REQUIRESCRIPT(&quot;/soap/ajax/44.0/connection.js&quot;)} // Include AJAX toolkit
+var orderObj = new sforce.SObject(&quot;Order__c&quot;);
+orderObj.Id = &quot;{!Order__c.Id}&quot;;
+
+// Retrieve necessary data from the Order record
+var orderQuery = sforce.connection.query(&quot;SELECT Id, Total_Amount__c, Payment_Due_Date__c, Account__r.Name FROM Order__c WHERE Id = &apos;{!Order__c.Id}&apos; LIMIT 1&quot;);
+var orderRecords = orderQuery.getArray(&quot;records&quot;);
+var order = orderRecords[0];
+
+// Create email content
+var emailBody = &quot;Dear User,\n\n&quot;;
+emailBody += &quot;Here are the details of the order:\n&quot;;
+emailBody += &quot;Payment Due Date: &quot; + order.Payment_Due_Date__c + &quot;\n&quot;;
+emailBody += &quot;Total Amount: $&quot; + order.Total_Amount__c + &quot;\n&quot;;
+emailBody += &quot;Customer Name: &quot; + order.Account__r.Name + &quot;\n\n&quot;;
+emailBody += &quot;Best regards,\nYour Salesforce Admin&quot;;
+
+// Send email using AJAX call
+sforce.connection.sendEmail([&quot;{!$User.Email}&quot;], &quot;Order Details&quot;, emailBody);
+
+// Provide user feedback (optional)
+alert(&quot;Email has been sent to &quot; + &quot;{!$User.Email}&quot;);</url>
+</WebLink>

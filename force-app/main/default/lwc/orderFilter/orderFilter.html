@@ -1,0 +1,24 @@
+<template>
+    <lightning-combobox 
+        label="Accounts" 
+        value={selectedAccount} 
+        options={accountOptions} 
+        onchange={handleAccountChange}>
+    </lightning-combobox>
+
+    <lightning-combobox 
+        label="Months" 
+        value={selectedMonth} 
+        options={monthOptions} 
+        onchange={handleMonthChange}>
+    </lightning-combobox>
+
+    <template if:true={orders}>
+        <lightning-datatable
+            key-field="Id"
+            data={orders}
+            columns={columns}
+            onrowaction={handleRowAction}>
+        </lightning-datatable>
+    </template>
+</template>

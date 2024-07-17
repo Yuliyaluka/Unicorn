@@ -1,0 +1,8 @@
+<!-- SendOrderButton.cmp -->
+<aura:component controller="SendOrderButtonController" implements="flexipage:availableForRecordHome,force:hasRecordId">
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="String" />
+    
+    <!-- Lightning Button to Trigger Action -->
+    <lightning:button label="Send Order" variant="brand" onclick="{!c.sendEmail}" />
+</aura:component>
